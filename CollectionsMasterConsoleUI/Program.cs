@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace CollectionsMasterConsoleUI
@@ -66,46 +69,60 @@ namespace CollectionsMasterConsoleUI
 
             /*   Set Up   */
             //TODO: Create an integer List
-            
+            var secondList = new List<int>();
 
             //TODO: Print the capacity of the list to the console
-            
+            Console.WriteLine($"Capacity: {secondList.Count}");
 
-            //TODO: Populate the List with 50 random numbers between 0 and 50 you will need a method for this            
-            
+            //TODO: Populate the List with 50 random numbers between 0 and 50 you will need a method for this  
+            Populater(secondList);
 
             //TODO: Print the new capacity
-            
+            Console.WriteLine($"New Capacity: {secondList.Capacity}");
 
             Console.WriteLine("---------------------");
 
             //TODO: Create a method that prints if a user number is present in the list
             //Remember: What if the user types "abc" accident your app should handle that!
-            Console.WriteLine("What number will you search for in the number list?");
-            
+
+            int userNumber;
+            bool yourNumber;
+
+            do
+            {
+                Console.WriteLine("What number will you search for in the number list?");
+                yourNumber = int.TryParse(Console.ReadLine(), out userNumber);
+
+            } while (yourNumber == false);
+
+            NumberChecker(secondList, userNumber);
+
             Console.WriteLine("-------------------");
 
             Console.WriteLine("All Numbers:");
             //UNCOMMENT this method to print out your numbers from arrays or lists
-            //NumberPrinter();
+            NumberPrinter(secondList);
             Console.WriteLine("-------------------");
 
 
             //TODO: Create a method that will remove all odd numbers from the list then print results
             Console.WriteLine("Evens Only!!");
+            OddKiller(secondList);
             
             Console.WriteLine("------------------");
 
             //TODO: Sort the list then print results
             Console.WriteLine("Sorted Evens!!");
-            
+            secondList.Sort();
+            NumberPrinter(secondList);
+
             Console.WriteLine("------------------");
 
             //TODO: Convert the list to an array and store that into a variable
-            
+            var thirdList = secondList.ToArray();
 
             //TODO: Clear the list
-            
+            secondList.Clear();
 
             #endregion
 
@@ -126,17 +143,41 @@ namespace CollectionsMasterConsoleUI
 
         private static void OddKiller(List<int> numberList)
         {
-            
+ 
+               for (int i = 0; i < numberList.Count; i++)
+            {
+                if (numberList[i] % 2 != 0)
+                {
+                    numberList[i] = 0;
+                }
+            }
+
+            NumberPrinter(numberList);
         }
 
         private static void NumberChecker(List<int> numberList, int searchNumber)
         {
-            
+           
+             if (numberList.Contains(searchNumber)) {
+                Console.WriteLine($"Correct! {searchNumber} is in the original list.");
+            } else
+            {
+                Console.WriteLine($"Sorry! {searchNumber} is not in the original list.");
+            }
+           
         }
 
         private static void Populater(List<int> numberList)
         {
-            Random rng = new Random();
+            while (numberList.Count < 51)
+            {
+                Random rng = new Random();
+                var secondNumbers = rng.Next(0, 50);
+
+                numberList.Add(secondNumbers);
+            }
+            
+            NumberPrinter(numberList);
 
         }
 
@@ -146,8 +187,7 @@ namespace CollectionsMasterConsoleUI
             for (int i = 0; i < numbers.Length; i++)
             {
                 Random rng = new Random();
-                numbers[i] = rng.Next(0, 50);
-               
+                numbers[i] = rng.Next(0, 50);  
             }
         }
 
